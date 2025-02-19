@@ -17,13 +17,13 @@ declare -A contracts=(
     ["BondOfferNFT"]="bondOffer"
     ["BondOfferNFTView"]="bondOfferView"
     ["UsdcDepositNFT"]="deposit"
-    ["mintERC20"]="mintContract"
+    ["MintERC20"]="mintContract"
     ["RealWorldAssetNFT"]="rwaNFT"
     ["WalletFeesNFT"]="walletFees"
 )
 
 # Default constructor argument (change as needed)
-DEFAULT_ADDRESS="0x0D1D5933dA6283D635D6ae65c356FBe01Dc1797C"
+DEFAULT_ADDRESS="0x9f0BEA7dE67e8Fb333067ed83b468E5082280835"
 
 # Generate module files
 for contract in "${!contracts[@]}"; do
