@@ -122,6 +122,29 @@ contract Treasury is Ownable, AccessControl, IERC721Receiver {
     // Withdrawal USDC from the Investment Pool
     //******************************
 
+    function wholeWithdrawalFeesUsdc() public {
+
+        uint256 walletFeesNFTId = walletFeesNFTContract.walletToNFTId(msg.sender);
+        require(walletFeesNFTId != 0, "Fees Wallet does not balance");
+
+        // check check of the fees being available (been paid)
+        IWalletFeesNFT.WalletFeesInfo memory walletFeesInfo = walletFeesNFTContract.getWalletFeesInfoByNFTId(walletFeesNFTId);
+      
+        require(walletFeesInfo.feeBalance>0,"amount for fee withdrawal is 0");
+
+        require(
+            usdcTokenContract.balanceOf(address(this)) >= walletFeesInfo.feeBalance,
+            "Insufficient contract USDC balance for fees transfer"
+        ); 
+
+        // reduce fee balance
+        walletFeesNFTContract.reduceFeeBalance(msg.sender, walletFeesInfo.feeBalance);
+
+        require(usdcTokenContract.transfer(msg.sender, walletFeesInfo.feeBalance), "Transfer usdc fees failed");
+
+    }
+
+
     function withdrawalFeesUsdc(uint256 amount) public {
 
         uint256 walletFeesNFTId = walletFeesNFTContract.walletToNFTId(msg.sender);
@@ -147,6 +170,28 @@ contract Treasury is Ownable, AccessControl, IERC721Receiver {
     //******************************
     // Withdrawal disbursements
     //******************************
+
+    function wholeWithdrawalDisbursementsUsdc() public {
+        uint256 walletNFTId = walletNFTContract.walletToNFTId(msg.sender);
+        require(walletNFTId != 0, "Investor does not have a wallet");
+
+        // Check liquid balance for bond investor is enough to buy the bonds
+        IWalletNFT.WalletInfo memory walletInfo = walletNFTContract.getWalletInfoByNFTId(walletNFTId);
+        require(walletInfo.disbursementsBalance > 0, "Disbursement balance is 0");
+
+        require(
+            usdcTokenContract.balanceOf(address(this)) >= walletInfo.disbursementsBalance,
+            "Insufficient contract USDC balance"
+        ); 
+
+        // reduce disbursements balance
+        walletNFTContract.decreaseDisbursementsBalance(msg.sender, walletInfo.disbursementsBalance);
+
+        require(usdcTokenContract.transfer(msg.sender, walletInfo.disbursementsBalance), "Transfer of Disbursements failed");
+
+
+    }
+
 
     function withdrawalDisbursementsUsdc(uint256 amount) public {
 

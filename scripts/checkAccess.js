@@ -23,6 +23,7 @@ const contractConfigs = {
     "CheckWalletTreasuryAccess": { contractFile: "walletAddress.json", abiFile: "walletABI.json", func: "isTreasuryApproved", checkAgainst: "treasuryAddress.json" },
     "CheckWalletBondAccess": { contractFile: "walletAddress.json", abiFile: "walletABI.json", func: "isBondApproved", checkAgainst: "bondAddress.json" },
     "CheckWalletFeesTreasuryAccess": { contractFile: "walletFeesAddress.json", abiFile: "walletFeesABI.json", func: "isTreasuryApproved", checkAgainst: "treasuryAddress.json" },
+    "CheckWalletFeesBondAccess": { contractFile: "walletFeesAddress.json", abiFile: "walletFeesABI.json", func: "isBondApproved", checkAgainst: "bondAddress.json" },
     "CheckBondOfferViewBondOfferAccess": { contractFile: "bondOfferViewAddress.json", abiFile: "bondOfferViewABI.json", func: "isBondOfferApproved", checkAgainst: "bondOfferAddress.json" },
 };
 
