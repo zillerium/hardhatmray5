@@ -1,0 +1,35 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Environment files (DO NOT COMMIT private keys!)
+.env
+
+# Hardhat build artifacts and cache
+artifacts/
+cache/
+
+# TypeChain generated files
+typechain/
+typechain-types/
+
+# Solidity coverage reports
+coverage/
+coverage.json
+
+# Hardhat Ignition deployments (ignore all chains)
+ignition/deployments/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.DS_Store
+
+# Ignore Hardhat test outputs
+test/cache/
+test/out/
+
+# Ignore compiled contract ABIs and addresses
+deployed_contracts/*.json
+hardhat.config.js
+
