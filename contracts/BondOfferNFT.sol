@@ -182,7 +182,7 @@ contract BondOfferNFT is ERC721, ERC721Burnable, Ownable, AccessControl {
         return (allBondOffersInfo[bondOfferId], bondSupply[bondOfferId]);
     }
 
-    function getLastBondOfferByStatus(uint256 nftId, BondOfferStatus status) external view returns (uint256) {
+    function getLastBondOfferByStatus(uint256 nftId, BondOfferStatus status) public view returns (uint256) {
         uint256[] memory bondOfferIds = nftToBondOffers[nftId];
         require(bondOfferIds.length > 0, "No bond offers for this NFT");
 
@@ -293,6 +293,18 @@ contract BondOfferNFT is ERC721, ERC721Burnable, Ownable, AccessControl {
         }
 
         return bondSupply[bondOfferId];
+    }
+
+    function redeemNFT(uint256 nftId) onlyAuthorizedRole public {
+
+        uint256 bondOfferId = getLastBondOfferByStatus(nftId, BondOfferStatus.Redeemed);
+
+        bondOfferNFTViewContract.removeRedeemedNFT(nftId); // remove nftid from issued array
+        BondOfferInfo storage bondOffer = allBondOffersInfo[bondOfferId];
+
+        bondOffer.bondOfferStatus = BondOfferStatus.Unavailable;
+
+
     }
 
     //**********************************************************

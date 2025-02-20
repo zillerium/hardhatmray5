@@ -230,7 +230,9 @@ contract Bond is Ownable, AccessControl, IERC721Receiver {
         (IBondOfferNFT.BondOfferStatus bondInfoStatus, uint256 bondOfferId) = 
                               bondOfferNFTContract.getLastBondOfferStatus(nftId);
         IBondOfferNFT.BondOfferInfo memory bondInfo = bondOfferNFTContract.getBondOfferInfo(bondOfferId);
-        if (bondInfo.bondOfferStatus != IBondOfferNFT.BondOfferStatus.Redeemed) {
+        if (bondInfo.bondOfferStatus == IBondOfferNFT.BondOfferStatus.Redeemed) {
+            bondOfferNFTContract.redeemNft(nftId); // changed redeemed status of bond offer to unavailable
+        } else {
             redeemBond(bondInfo.bondOfferId);
         }
 

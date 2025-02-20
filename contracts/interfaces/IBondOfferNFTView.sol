@@ -33,6 +33,8 @@ interface IBondOfferNFTView {
 
     function addRedeemedNft(uint256 nftId, uint256 nftPrice) external;
 
+    function removeRedeemedNFT(uint256 nftId) external;
+
     function removeFundedNFT(uint256 nftId) external;
 
     function removeIssuedNFT(uint256 nftId) external;

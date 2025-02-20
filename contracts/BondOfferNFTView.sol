@@ -87,6 +87,21 @@ contract BondOfferNFTView is  Ownable, AccessControl {
     function addRedeemedNft(uint256 nftId, uint256 nftPrice) external  onlyAuthorizedRole {
         redeemedBondNFTs.push(RedeemedBondNftInfo(nftId, nftPrice));
     }
+
+   function removeRedeemdNFT(uint256 nftId) public onlyAuthorizedRole {
+        removeRedeemedNFTInternal(nftId);
+        redeemedBondNFTs.pop();
+    }
+
+    function removeRedeemedNFTInternal(uint256 nftId) internal {
+        for (uint256 i = 0; i < redeemedBondNFTs.length; i++) {
+            if (redeemedBondNFTs[i].nftId == nftId) {
+                redeemedBondNFTs[i] = redeemedBondNFTs[redeemedBondNFTs.length - 1];
+                return;
+            }
+        }
+    }
+
     function removeFundedNFT(uint256 nftId) public onlyAuthorizedRole {
         removeFundedNFTInternal(nftId);
         fundedNFTs.pop();
