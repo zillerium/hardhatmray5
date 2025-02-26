@@ -40,6 +40,23 @@ contract WalletNFT is ERC721, Ownable, AccessControl {
         _;
     }
 
+    function getAllLiquidBalances() external view returns (uint256[][] memory) {
+        uint256 totalWallets = walletNFTCount;
+        uint256[][] memory balances = new uint256[][](totalWallets);
+
+        for (uint256 i = 1; i <= totalWallets; i++) {
+            if (walletInfoById[i].walletNFTId == 0) {
+                continue; // Skip uninitialized wallets
+            }
+            
+            balances[i - 1] = new uint256[](2); // Initialize inner array
+            balances[i - 1][0] = i; // NFT ID
+            balances[i - 1][1] = walletInfoById[i].liquidBalance; // Liquid balance
+        }
+
+        return balances;
+    }
+
     //****************
     // Creates new wallet Nft Id
     //*************
@@ -269,3 +286,4 @@ contract WalletNFT is ERC721, Ownable, AccessControl {
     }
 
 }
+

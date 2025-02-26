@@ -17,7 +17,14 @@ interface IBondInvestment {
         uint256 walletNFTId
     ) external;
 
+    // Get all investments for a wallet
+    function getBondInvestmentsByWallet(address wallet) external view returns (BondInvestmentInfo[] memory);
+
     function getBondInvestmentsByBondOfferId(uint256 bondOfferId) external view returns (BondInvestmentInfo[] memory);
 
     function checkInvestorInBondOffer(address wallet, uint256 bondOfferId) external view returns (bool);
+
+    function getAllInvestors() external view returns (address[] memory);
+
 }
+

@@ -59,7 +59,7 @@ interface IBondOfferNFT {
     function getLastBondOfferByStatus(uint256 nftId) external view returns (uint256);
 
 
-    function redeemNft(uint256 nftId) external;
+    function redeemBondOfferNft(uint256 nftId) external;
         
 
     function fundBondOffer(uint256 bondOfferId) external;

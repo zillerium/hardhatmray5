@@ -16,6 +16,7 @@ interface IWalletNFT {
 
     function mintAndUpdateLiquidBalance(address wallet, uint256 amount) external;
     
+    function getAllLiquidBalances() external view returns (uint256[][] memory);
 
     function walletToNFTId(address wallet) external view returns (uint256);
 
@@ -46,3 +47,4 @@ interface IWalletNFT {
         view 
         returns (uint256 bondBalance, uint256 liquidBalance, uint256 disbursementsBalance);
 }
+

@@ -38,7 +38,10 @@ contract BondInvestment is ERC721, Ownable, AccessControl {
         // Maps wallet address to all BondInvestmentInfo
     mapping(address => BondInvestmentInfo[]) public bondInvestmentsByWallet;
 
-    
+    // Stores all unique investors
+    mapping(address => bool) public isInvestor;
+    address[] public investorsList;
+
     constructor(address initialOwner) ERC721("BondInvestmentNFT", "BondInvestmentNFT") Ownable(initialOwner) {
         _grantRole(DEFAULT_ADMIN_ROLE, initialOwner);
     }
@@ -70,12 +73,22 @@ contract BondInvestment is ERC721, Ownable, AccessControl {
         // ✅ Directly mark the wallet as an investor for this bondOfferId
         isInvestorInBond[bondOfferId][wallet] = true;
 
+            // ✅ Track unique investors globally
+        if (!isInvestor[wallet]) {
+            isInvestor[wallet] = true;
+            investorsList.push(wallet);
+        }
+
         // minted to the Bond contract which is msg.sender
         _safeMint(msg.sender, newBondInvestmentNFTId);
 
         // investor wallet maps to all investments (different bond offers or the same)
         walletToBondInvestmentIds[wallet].push(newBondInvestmentNFTId);
  
+    }
+
+    function getAllInvestors() external view returns (address[] memory) {
+        return investorsList;
     }
 
     //*************************
@@ -100,6 +113,7 @@ contract BondInvestment is ERC721, Ownable, AccessControl {
     function getBondInvestmentsByWallet(address wallet) external view returns (BondInvestmentInfo[] memory) {
         return bondInvestmentsByWallet[wallet];
     }
+
 
 
     //*****************************
@@ -139,3 +153,4 @@ contract BondInvestment is ERC721, Ownable, AccessControl {
  
     
 }
+

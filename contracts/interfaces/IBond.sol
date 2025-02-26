@@ -36,13 +36,13 @@ interface IBond is  IERC721Receiver {
     // Redeem Bond
     function redeemBond(uint256 bondOfferId) external returns (uint256, address, uint256);
 
-    function redeemNft(uint256 bondOfferId) external returns (uint256, address, uint256);
+    function redeemBondNft(uint256 nftId) external returns (uint256, address, uint256);
 
     // Deposit Bond Fees
     function depositBondFees(uint256 usdcAmount, address payer, uint256 bondOfferId) external;
 
     // Withdraw Bond Offering (if not fully funded)
-    function withdrawBondOffer(uint256 bondOfferId, address wallet) external returns (uint256);
+    function withdrawBondOffer(uint256 bondOfferId, address wallet) external returns (uint256, address);
 
     // Fund Bond Offer (marks it as fully funded)
     function fundBondOffer(uint256 bondOfferId) external;

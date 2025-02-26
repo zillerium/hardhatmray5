@@ -275,6 +275,9 @@ contract BondOfferNFT is ERC721, ERC721Burnable, Ownable, AccessControl {
         bondOfferNFTViewContract.addFundedNft(bondOffer.nftId, bondOffer.nftPrice);
         bondOfferNFTViewContract.addBondedNft(bondOfferId, bondOffer.bondOfferPrice);
         bondOfferNFTViewContract.removeIssuedNFT(bondOffer.nftId);
+
+        delete issuedBondForNFT[bondOffer.nftId];
+
  
     }
 
@@ -295,7 +298,7 @@ contract BondOfferNFT is ERC721, ERC721Burnable, Ownable, AccessControl {
         return bondSupply[bondOfferId];
     }
 
-    function redeemNFT(uint256 nftId) onlyAuthorizedRole public {
+    function redeemBondOfferNft(uint256 nftId) onlyAuthorizedRole public {
 
         uint256 bondOfferId = getLastBondOfferByStatus(nftId, BondOfferStatus.Redeemed);
 

@@ -339,7 +339,7 @@ contract Treasury is Ownable, AccessControl, IERC721Receiver {
     function redeemNft(uint256 nftId) public {
         
         // ++++ redeem in Bond.sol
-        (uint256 nftid, address issuer, uint256 amount) = bondContract.redeemNft(nftId);
+        (uint256 nftid, address issuer, uint256 amount) = bondContract.redeemBondNft(nftId);
         require(issuer == msg.sender, "only the bond issuer can initate this action");
 
         // burn mray tokens when nft is returned
@@ -354,10 +354,10 @@ contract Treasury is Ownable, AccessControl, IERC721Receiver {
     function withdrawBondOffering(uint256 bondOfferId) public {
         // +++ withdrawal call in Bond
 
-        uint nftid = bondContract.withdrawBondOffer(bondOfferId, msg.sender);
+        (uint nftid, address issuer) = bondContract.withdrawBondOffer(bondOfferId, msg.sender);
 
          // return nft to the bond offer issuer
-        rwaNftContract.transferFrom(address(this), msg.sender, nftid);   
+        rwaNftContract.transferFrom(address(this), issuer, nftid);   
     }
 
     function updateBondOfferStatus(uint256 bondOfferId, uint256 newStatus) public {

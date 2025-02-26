@@ -88,7 +88,7 @@ contract BondOfferNFTView is  Ownable, AccessControl {
         redeemedBondNFTs.push(RedeemedBondNftInfo(nftId, nftPrice));
     }
 
-   function removeRedeemdNFT(uint256 nftId) public onlyAuthorizedRole {
+   function removeRedeemedNFT(uint256 nftId) public onlyAuthorizedRole {
         removeRedeemedNFTInternal(nftId);
         redeemedBondNFTs.pop();
     }

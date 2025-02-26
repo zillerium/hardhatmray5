@@ -225,13 +225,13 @@ contract Bond is Ownable, AccessControl, IERC721Receiver {
 
     }
 
-    function redeemNft(uint256 nftId) public onlyRole(TREASURY_ROLE)    returns   (uint256, address, uint256) {
+    function redeemBondNft(uint256 nftId) public onlyRole(TREASURY_ROLE)    returns   (uint256, address, uint256) {
 
         (IBondOfferNFT.BondOfferStatus bondInfoStatus, uint256 bondOfferId) = 
                               bondOfferNFTContract.getLastBondOfferStatus(nftId);
         IBondOfferNFT.BondOfferInfo memory bondInfo = bondOfferNFTContract.getBondOfferInfo(bondOfferId);
         if (bondInfo.bondOfferStatus == IBondOfferNFT.BondOfferStatus.Redeemed) {
-            bondOfferNFTContract.redeemNft(nftId); // changed redeemed status of bond offer to unavailable
+            bondOfferNFTContract.redeemBondOfferNft(nftId); // changed redeemed status of bond offer to unavailable
         } else {
             redeemBond(bondInfo.bondOfferId);
         }
@@ -316,7 +316,8 @@ contract Bond is Ownable, AccessControl, IERC721Receiver {
     // when a bond sale is not funded, can be executed by any bondholder or the issuer
     //*********************************************** 
  
-    function withdrawBondOffer(uint256 bondOfferId, address wallet) public onlyRole(TREASURY_ROLE) returns (uint256) {
+    function withdrawBondOffer(uint256 bondOfferId, address wallet) 
+             public onlyRole(TREASURY_ROLE) returns (uint256, address) {
 
         // checks remaining supply > 0, ie bond offer was not fully funded
         require(bondOfferNFTContract.getRemainingSupply(bondOfferId)> 0, "Bond is funded");
@@ -361,13 +362,14 @@ contract Bond is Ownable, AccessControl, IERC721Receiver {
         IBondFeesNFT.BondFeesInfo memory bondFeeInfo = bondFeesNFTContract.getBondFeesInfoByBondOfferId(bondOfferId);
 
         uint256 fees = bondFeeInfo.usdcAmount;
+        address payer=bondFeeInfo.payer; // issuer
 
 
         // return fees to the issuer wallet
-        walletFeesNFTContract.increaseFeeBalance(wallet, fees);
+        walletFeesNFTContract.increaseFeeBalance(payer, fees);
 
         uint256 nftid=bondOfferNFTContract.getNFTIdForBondOffer(bondOfferId);
-        return nftid;
+        return (nftid, payer);
      }
 
   
